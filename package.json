@@ -1,0 +1,24 @@
+{
+  "name": "hdinsight-control-webservice",
+  "version": "1.0.0",
+  "description": "Control up/down of hdinsight via web hooks to azure automation",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/morsh/hdinsight-control-webservice.git"
+  },
+  "author": "Mor Shemesh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/morsh/hdinsight-control-webservice/issues"
+  },
+  "homepage": "https://github.com/morsh/hdinsight-control-webservice#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "request": "^2.74.0"
+  }
+}
