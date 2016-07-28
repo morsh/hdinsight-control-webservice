@@ -12,22 +12,22 @@ function end(res, response, isError) {
 app.post('/hdinsight/start', function (req, res) {
   request.post(process.env.HDINSIGHT_START_WEBHOOK, function (err, httpResponse, body) {
     if (err) {
-      return end(res, 'hdinsight start failed:' + err, true);
+      return end(res, { err: 'hdinsight start failed:' + err }, true);
     }
 
     res.writeHead(200, { 'Content-Type': 'application/json' });    
-    end(res, 'request to start hd insight was sent successfully');
+    end(res, { data: 'request to start hd insight was sent successfully' });
   });
 });
 
 app.post('/hdinsight/stop', function (req, res) {
   request.post(process.env.HDINSIGHT_STOP_WEBHOOK, function (err, httpResponse, body) {
     if (err) {
-      return end(res, 'hdinsight stop failed:' + err, true);
+      return end(res, { response: 'hdinsight stop failed:' + err }, true);
     }
 
     res.writeHead(200, { 'Content-Type': 'application/json' });    
-    end(res, 'request to stop hd insight was sent successfully');
+    end(res, { response: 'request to stop hd insight was sent successfully' });
   });
 });
 
@@ -46,7 +46,7 @@ app.get('/hdinsight/check', function (req, res) {
   };
   request(options, function (error, response, body) {
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(error ? JSON.stringify(error) : body);
+    res.end({ response: error ? JSON.stringify(error) : body });
   });
 });
 
@@ -65,7 +65,7 @@ app.post('/hdinsight/submit-job', function (req, res) {
   };
   request(options, function (error, response, body) {
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(error ? JSON.stringify(error) : JSON.stringify(body));
+    res.end({ response: error ? JSON.stringify(error) : JSON.stringify(body) });
   });
 });
 

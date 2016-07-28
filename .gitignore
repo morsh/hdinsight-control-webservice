@@ -3,6 +3,9 @@ logs
 *.log
 npm-debug.log*
 
+#Private
+*.private.*
+
 # Runtime data
 pids
 *.pid
