@@ -51,6 +51,17 @@ app.get('/hdinsight/check', function (req, res) {
   });
 });
 
+/**
+ * Examples:
+ *  Example 1 parameters:
+ *      script:wasb:///scripts/genoox12.py
+ *      input:wasb:///vcf_uploads_man/NA12877-2.vcf.gz
+ *      output:wasb:///vcf_uploads_man_output/NA12877-2.vcf.gz.out
+ *      name:job try 1
+ * 
+ * Example 2 url:
+ *      http://localhost:3000/hdinsight/submit-job?script=wasb:///scripts/genoox12.py&input=wasb:///vcf_uploads_man/NA12877-2.vcf.gz&output=wasb:///vcf_uploads_man_output/NA12877-2.vcf.gz.out&name=job%20try%201
+ */
 app.post('/hdinsight/submit-job', function (req, res) {
   var username = process.env.LIVY_USER;
   var password = process.env.LIVY_PASS;
