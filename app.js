@@ -33,11 +33,11 @@ app.post('/hdinsight/stop', function (req, res) {
 
 app.get('/hdinsight/check', function (req, res) {
 
-  var username = constants.LIVY_USER;
-  var password = constants.LIVY_PASS;
+  var username = process.env.LIVY_USER;
+  var password = process.env.LIVY_PASS;
   var authenticationHeader = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
   var options = {
-    url: constants.HDINSIGHT_CHECK_URL,
+    url: process.env.HDINSIGHT_CHECK_URL,
     method: 'GET',
     headers: {
       "Content-Type": 'application/json', 
@@ -45,8 +45,9 @@ app.get('/hdinsight/check', function (req, res) {
     }
   };
   request(options, function (error, response, body) {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end({ response: error ? JSON.stringify(error) : body });
+    console.log('check returned with status %s', response.statusCode);
+    res.writeHead(response.statusCode, { 'Content-Type': response.headers['content-type'] });
+    res.end(body);
   });
 });
 
@@ -54,18 +55,30 @@ app.post('/hdinsight/submit-job', function (req, res) {
   var username = process.env.LIVY_USER;
   var password = process.env.LIVY_PASS;
   var authenticationHeader = 'Basic ' + new Buffer(username + ':' + password).toString('base64');
+
+  var args = [req.query.input, req.query.output];
+
+  if (req.query.args) {
+    args = args.concat(req.query.args.split(';'));
+  }
+
   var options = {
-    url: constants.LIVY_URL,
+    url: process.env.HDINSIGHT_CHECK_URL,
     method: 'POST',
     headers: {
       "Content-Type": 'application/json', 
       "Authorization": authenticationHeader 
     },
-    json: req.body
+    json: {
+      "file": req.query.script, 
+      "args": args,
+      "name": req.query.name
+    }
   };
   request(options, function (error, response, body) {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end({ response: error ? JSON.stringify(error) : JSON.stringify(body) });
+    console.log('submit of job returned with status %s', response.statusCode);
+    res.writeHead(response.statusCode, { 'Content-Type': response.headers['content-type'] });
+    res.end(JSON.stringify(body));
   });
 });
 
